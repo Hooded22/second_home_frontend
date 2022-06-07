@@ -1,0 +1,22 @@
+{
+    "FunctionalComponent": {
+      "prefix": "fc",
+      "body": [
+        "import React, {FunctionComponent} from 'react';",
+        "",
+        "interface IProps{}",
+        "const ${1:filename}:FunctionComponent<IProps> = () => {",
+        "	return (",
+        "		<div>",
+        "			<h1>${1:filename}</h1>",
+        "		</div>",
+        "	);",
+        "};",
+        "",
+        "export default ${1:filename};",
+        ""
+      ],
+      "description": "Class Component Template"
+    }
+  }
+  
