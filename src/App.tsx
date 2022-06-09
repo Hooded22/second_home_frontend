@@ -6,6 +6,7 @@ import { Container, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import LoginPage from "./pages/LoginPage";
+import ProtectedPage from "./pages/ProtectedPage";
 
 const theme = createTheme({
   palette: {
@@ -39,7 +40,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedPage>
+              <HomePage />
+            </ProtectedPage>
+          }
+        />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>

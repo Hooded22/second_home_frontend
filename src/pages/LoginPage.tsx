@@ -7,12 +7,14 @@ import { useForm } from "react-hook-form";
 import { LoginFormData } from "../components/LoginForm/types";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { getUserDetails } from "../features/users/usersSlice";
+import { Navigate } from "react-router-dom";
 
 interface IProps {}
 
 const LoginPage: FunctionComponent<IProps> = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.users.user);
+  const token = useAppSelector((state) => state.users.token);
   const statusOfRequest = useAppSelector((state) => state.users.status);
   const {
     register,
@@ -23,6 +25,10 @@ const LoginPage: FunctionComponent<IProps> = () => {
   const onSubmit = (data: LoginFormData) => {
     dispatch(getUserDetails({ email: data.email, password: data.password }));
   };
+
+  if (user && token) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Container fixed sx={styles.container}>

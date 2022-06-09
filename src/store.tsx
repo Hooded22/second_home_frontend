@@ -1,13 +1,26 @@
 import {
   combineReducers,
   configureStore,
+  createListenerMiddleware,
   createStore,
   getDefaultMiddleware,
+  PayloadAction,
 } from "@reduxjs/toolkit";
-import usersSlice from "./features/users/usersSlice";
+import usersSlice, { getUserDetailsSuccess } from "./features/users/usersSlice";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import { userSaga } from "./features/users/sagas";
+import { LoginUserResponse } from "./types/User";
+
+const localStoreMiddleware = createListenerMiddleware();
+
+localStoreMiddleware.startListening({
+  actionCreator: getUserDetailsSuccess,
+  effect: (action) => {
+    localStorage.setItem("TOKEN", action.payload.token);
+    localStorage.setItem("USER", JSON.stringify(action.payload.userDetails));
+  },
+});
 
 const sagaMiddleware = createSagaMiddleware();
 const reducers = combineReducers({ users: usersSlice });
@@ -15,11 +28,10 @@ const reducers = combineReducers({ users: usersSlice });
 const store = configureStore({
   reducer: reducers,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(sagaMiddleware),
-});
-
-store.subscribe(() => {
-  localStorage.setItem("TOKEN", store.getState().users.token || "");
+    getDefaultMiddleware().concat([
+      sagaMiddleware,
+      localStoreMiddleware.middleware,
+    ]),
 });
 
 function* saga() {

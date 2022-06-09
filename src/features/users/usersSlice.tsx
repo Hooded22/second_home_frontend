@@ -6,6 +6,11 @@ import {
   UserDetails,
 } from "../../types/User";
 
+const getUserFromLocalStorage = (): UserDetails => {
+  const user = localStorage.getItem("USER");
+  return user ? JSON.parse(user) : undefined;
+};
+
 interface UserState {
   status: RequestStatus | null;
   error: string | null;
@@ -17,6 +22,7 @@ const initialState: UserState = {
   status: null,
   error: null,
   token: localStorage.getItem("TOKEN"),
+  user: getUserFromLocalStorage(),
 };
 
 const usersSlice = createSlice({
