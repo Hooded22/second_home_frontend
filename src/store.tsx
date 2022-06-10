@@ -6,13 +6,19 @@ import {
   getDefaultMiddleware,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import usersSlice, { getUserDetailsSuccess } from "./features/users/usersSlice";
+import usersSlice, {
+  getUserDetailsSuccess,
+  logoutUser,
+} from "./features/users/usersSlice";
 import createSagaMiddleware from "redux-saga";
 import { all } from "redux-saga/effects";
 import { userSaga } from "./features/users/sagas";
 import { LoginUserResponse } from "./types/User";
+import { reservationsSaga } from "./features/reservations/sagas";
+import reservationsSlice from "./features/reservations/reservationsSlice";
 
 const localStoreMiddleware = createListenerMiddleware();
+const logoutUserMiddleware = createListenerMiddleware();
 
 localStoreMiddleware.startListening({
   actionCreator: getUserDetailsSuccess,
@@ -22,8 +28,19 @@ localStoreMiddleware.startListening({
   },
 });
 
+logoutUserMiddleware.startListening({
+  actionCreator: logoutUser,
+  effect: () => {
+    localStorage.removeItem("TOKEN");
+    localStorage.removeItem("USER");
+  },
+});
+
 const sagaMiddleware = createSagaMiddleware();
-const reducers = combineReducers({ users: usersSlice });
+const reducers = combineReducers({
+  users: usersSlice,
+  reservations: reservationsSlice,
+});
 
 const store = configureStore({
   reducer: reducers,
@@ -35,7 +52,7 @@ const store = configureStore({
 });
 
 function* saga() {
-  yield all([...userSaga]);
+  yield all([...userSaga, ...reservationsSaga]);
 }
 
 sagaMiddleware.run(saga);

@@ -1,3 +1,4 @@
+import { Reservation } from "../types/Reservation";
 import { LoginUserCredentials, UserDetails } from "../types/User";
 import { request } from "./ApiService";
 import { endpoints } from "./Endpoints";

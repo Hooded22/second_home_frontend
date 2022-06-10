@@ -29,7 +29,7 @@ const usersSlice = createSlice({
   name: "users",
   initialState: initialState,
   reducers: {
-    getUserDetails: (state, action: PayloadAction<LoginUserCredentials>) => {
+    getUserDetails: (state, _: PayloadAction<LoginUserCredentials>) => {
       state.status = RequestStatus.PENDING;
       state.user = undefined;
     },
@@ -45,10 +45,18 @@ const usersSlice = createSlice({
       state.status = RequestStatus.FAILURE;
       state.error = action.payload.message;
     },
+    logoutUser: (state) => {
+      state.user = undefined;
+      state.token = "";
+    },
   },
 });
 
-export const { getUserDetails, getUserDetailsSuccess, getUserDetailFailure } =
-  usersSlice.actions;
+export const {
+  getUserDetails,
+  getUserDetailsSuccess,
+  getUserDetailFailure,
+  logoutUser,
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

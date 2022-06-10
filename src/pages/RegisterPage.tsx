@@ -1,6 +1,6 @@
 import { Container, createStyles } from "@mui/material";
 import React, { FunctionComponent } from "react";
-import RegisterForm from "../components/RegisterForm/RegisterForm";
+import RegisterForm from "../components/RegisterForm";
 import { StylesType } from "../types";
 
 interface IProps {}
