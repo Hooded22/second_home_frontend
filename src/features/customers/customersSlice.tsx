@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialState, RequestError, RequestStatus } from "../../types";
-import { Customer } from "../../types/Customer";
+import { Customer, CustomerToSend } from "../../types/Customer";
 
 interface CustomersState extends InitialState {
   data: Customer[];
+  addCustomerStatus: RequestStatus | null;
 }
 
 const initialState: CustomersState = {
+  addCustomerStatus: null,
   status: null,
   error: null,
   data: [],
@@ -25,7 +27,6 @@ const customersSlice = createSlice({
       state,
       action: PayloadAction<Customer[]>
     ) => {
-      console.log("HERE: ", action.payload);
       state.data = action.payload;
       state.status = RequestStatus.SUCCESSFULL;
     },
@@ -43,6 +44,20 @@ const customersSlice = createSlice({
     deleteCustomerSuccess: (state, action: PayloadAction<Customer[]>) => {
       state.data = action.payload;
     },
+    addCustomerRequest: (state, _: PayloadAction<CustomerToSend>) => {
+      state.addCustomerStatus = RequestStatus.PENDING;
+      state.error = null;
+    },
+    addCustomerSuccess: (state) => {
+      state.addCustomerStatus = RequestStatus.SUCCESSFULL;
+    },
+    addCustomerFailure: (state, action: PayloadAction<RequestError>) => {
+      state.addCustomerStatus = RequestStatus.FAILURE;
+      state.error = action.payload.message;
+    },
+    resetAddCustomerStatus: (state) => {
+      state.status = null;
+    },
   },
 });
 
@@ -51,6 +66,10 @@ export const {
   getAllCustomersRequestSuccess,
   getAllCustomersRequestFailure,
   deleteCustomerSuccess,
+  addCustomerRequest,
+  addCustomerSuccess,
+  addCustomerFailure,
+  deleteCustomerRequest,
 } = customersSlice.actions;
 
 export default customersSlice.reducer;

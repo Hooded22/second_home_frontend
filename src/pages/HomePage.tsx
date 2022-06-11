@@ -42,6 +42,9 @@ const HomePage: FunctionComponent<IProps> = () => {
     (state) =>
       state.reservations.editReservationStatus === RequestStatus.SUCCESSFULL
   );
+  const addCustomerCompleted = useAppSelector(
+    (state) => state.customers.addCustomerStatus === RequestStatus.SUCCESSFULL
+  );
 
   useEffect(() => {
     dispatch(getAllReservationsRequest());
@@ -50,11 +53,13 @@ const HomePage: FunctionComponent<IProps> = () => {
   }, []);
 
   useEffect(() => {
-    if (addReservationCompleted) {
+    if (addReservationCompleted || addCustomerCompleted) {
       setAlert("Added successfully");
       setTimeout(() => {
         setAlert("");
-        dispatch(resetAddReservationStatus());
+        addReservationCompleted
+          ? dispatch(resetAddReservationStatus())
+          : dispatch(resetAddCustomerStatus());
       }, 3000);
     }
 
@@ -95,3 +100,6 @@ const styles: StylesType = {
 };
 
 export default HomePage;
+function resetAddCustomerStatus(): any {
+  throw new Error("Function not implemented.");
+}

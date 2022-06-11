@@ -4,3 +4,5 @@ export interface Customer {
   lastName: string;
   birthDate: Date;
 }
+
+export type CustomerToSend = Omit<Customer, "_id">;
