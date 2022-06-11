@@ -13,6 +13,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import EditReservationPage from "./pages/EditReservationPage";
 import PageTemplate from "./pages/PageTemplate";
 import ReservationDetails from "./pages/ReservationDetails";
+import CustomerDetails from "./components/CustomerDetails";
+import RoomDetails from "./pages/RoomDetails";
 
 const theme = createTheme({
   palette: {
@@ -85,6 +87,26 @@ function App() {
               <ProtectedPage>
                 <PageTemplate pageName="Reservation details">
                   <ReservationDetails />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/customerDetials"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Customer details">
+                  <CustomerDetails />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/roomDetails"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Room details">
+                  <RoomDetails />
                 </PageTemplate>
               </ProtectedPage>
             }

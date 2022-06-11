@@ -15,18 +15,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-
-const AddNewReservationButton = ({ onPress }: { onPress: () => void }) => {
-  return (
-    <Button
-      sx={{ maxWidth: 300, marginTop: 1, marginBottom: 1 }}
-      variant="contained"
-      onClick={onPress}
-    >
-      Add new reservation
-    </Button>
-  );
-};
+import AddButton from "./AddButton";
 interface IProps {
   data: Reservation[];
 }
@@ -49,7 +38,10 @@ const ReservationList: FunctionComponent<IProps> = ({ data }) => {
   return (
     <>
       <h2>Reservations</h2>
-      <AddNewReservationButton onPress={() => navigate("/addReservation")} />
+      <AddButton
+        onPress={() => navigate("/addReservation")}
+        title="Add new reservation"
+      />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -96,8 +88,10 @@ const ReservationList: FunctionComponent<IProps> = ({ data }) => {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <AddNewReservationButton onPress={() => navigate("/addReservation")} />
+      <AddButton
+        onPress={() => navigate("/addReservation")}
+        title="Add new reservation"
+      />
     </>
   );
 };
