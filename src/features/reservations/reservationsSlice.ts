@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ReservationFormData } from "../../components/ReservationForm";
 import { InitialState, RequestError, RequestStatus } from "../../types";
-import { Reservation } from "../../types/Reservation";
+import { Reservation, ReservationToSend } from "../../types/Reservation";
 
 interface ReservationsState extends InitialState {
   data: Reservation[];
+  addReservationStatus: RequestStatus | null;
 }
 
 const initialState: ReservationsState = {
   status: null,
+  addReservationStatus: null,
   error: null,
   data: [],
 };
@@ -39,6 +42,21 @@ const reservationsSlice = createSlice({
     deleteReservationSuccess: (state, action: PayloadAction<Reservation[]>) => {
       state.data = action.payload;
     },
+    addReservationRequest: (
+      state,
+      action: PayloadAction<ReservationToSend>
+    ) => {
+      state.addReservationStatus = RequestStatus.PENDING;
+    },
+    addReservationSuccess: (state) => {
+      state.addReservationStatus = RequestStatus.SUCCESSFULL;
+    },
+    addReservationFailure: (state) => {
+      state.addReservationStatus = RequestStatus.FAILURE;
+    },
+    resetAddReservationStatus: (state) => {
+      state.addReservationStatus = null;
+    },
   },
 });
 
@@ -48,6 +66,10 @@ export const {
   getAllReservationsSuccess,
   deleteReservationRequest,
   deleteReservationSuccess,
+  addReservationRequest,
+  addReservationSuccess,
+  addReservationFailure,
+  resetAddReservationStatus,
 } = reservationsSlice.actions;
 
 export default reservationsSlice.reducer;

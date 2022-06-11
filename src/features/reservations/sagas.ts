@@ -1,13 +1,17 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { put, takeLatest } from "redux-saga/effects";
-import { Reservation } from "../../types/Reservation";
-import { getAllReservations, removeReservation } from "./api";
+import { ReservationFormData } from "../../components/ReservationForm";
+import { Reservation, ReservationToSend } from "../../types/Reservation";
+import { addReservation, getAllReservations, removeReservation } from "./api";
 import {
   getAllReservationsRequest,
   getAllReservationsFailure,
   getAllReservationsSuccess,
   deleteReservationSuccess,
   deleteReservationRequest,
+  addReservationSuccess,
+  addReservationFailure,
+  addReservationRequest,
 } from "./reservationsSlice";
 
 export function* getAllReservationsSaga() {
@@ -32,7 +36,20 @@ export function* removeReservationSaga({
   }
 }
 
+export function* addReservationSaga({
+  payload,
+}: PayloadAction<ReservationToSend>) {
+  try {
+    yield addReservation(payload);
+    yield put(getAllReservationsRequest());
+    yield put(addReservationSuccess());
+  } catch (error) {
+    yield put(addReservationFailure);
+  }
+}
+
 export const reservationsSaga = [
   takeLatest(getAllReservationsRequest, getAllReservationsSaga),
   takeLatest(deleteReservationRequest, removeReservationSaga),
+  takeLatest(addReservationRequest, addReservationSaga),
 ];

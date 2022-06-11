@@ -22,3 +22,11 @@ export type ReservationFromAPI = Omit<Reservation, "customer" | "room"> & {
   customerId: Customer;
   roomId: Room;
 };
+
+export type ReservationToSend = Omit<
+  Reservation,
+  "customer" | "room" | "_id"
+> & {
+  customerId: string;
+  roomId: string;
+};

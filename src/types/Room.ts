@@ -5,6 +5,7 @@ export enum RoomStandard {
 }
 
 export interface Room {
+  _id: string;
   number: number;
   price: number;
   floor: number;

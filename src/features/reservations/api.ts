@@ -1,6 +1,11 @@
 import { request } from "../../API/ApiService";
 import { endpoints } from "../../API/Endpoints";
-import { Reservation, ReservationFromAPI } from "../../types/Reservation";
+import { ReservationFormData } from "../../components/ReservationForm";
+import {
+  Reservation,
+  ReservationFromAPI,
+  ReservationToSend,
+} from "../../types/Reservation";
 
 export const getAllReservations = async (): Promise<Reservation[]> => {
   try {
@@ -30,6 +35,16 @@ export const removeReservation = async (
       room: item.roomId,
     }));
   } catch (error) {
+    throw error;
+  }
+};
+
+export const addReservation = async (dataToSend: ReservationToSend) => {
+  try {
+    return await request.post(endpoints.reservations, { ...dataToSend });
+  } catch (error) {
+    console.error("ERR: ", error);
+
     throw error;
   }
 };

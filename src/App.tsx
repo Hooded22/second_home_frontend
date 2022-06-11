@@ -7,6 +7,9 @@ import { ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import LoginPage from "./pages/LoginPage";
 import ProtectedPage from "./pages/ProtectedPage";
+import AddReservationPage from "./pages/AddReservationPage";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const theme = createTheme({
   palette: {
@@ -37,21 +40,31 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedPage>
-              <HomePage />
-            </ProtectedPage>
-          }
-        />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Routes>
-    </ThemeProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedPage>
+                <HomePage />
+              </ProtectedPage>
+            }
+          />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/addReservation"
+            element={
+              <ProtectedPage>
+                <AddReservationPage />
+              </ProtectedPage>
+            }
+          />
+        </Routes>
+      </ThemeProvider>
+    </LocalizationProvider>
   );
 }
 

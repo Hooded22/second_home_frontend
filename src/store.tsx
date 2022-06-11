@@ -16,6 +16,10 @@ import { userSaga } from "./features/users/sagas";
 import { LoginUserResponse } from "./types/User";
 import { reservationsSaga } from "./features/reservations/sagas";
 import reservationsSlice from "./features/reservations/reservationsSlice";
+import customersSlice from "./features/customers/customersSlice";
+import { customersSaga } from "./features/customers/saga";
+import { roomsSaga } from "./features/rooms/saga";
+import roomsSlice from "./features/rooms/roomsSlice";
 
 const localStoreMiddleware = createListenerMiddleware();
 const logoutUserMiddleware = createListenerMiddleware();
@@ -40,6 +44,8 @@ const sagaMiddleware = createSagaMiddleware();
 const reducers = combineReducers({
   users: usersSlice,
   reservations: reservationsSlice,
+  customers: customersSlice,
+  rooms: roomsSlice,
 });
 
 const store = configureStore({
@@ -52,7 +58,7 @@ const store = configureStore({
 });
 
 function* saga() {
-  yield all([...userSaga, ...reservationsSaga]);
+  yield all([...userSaga, ...reservationsSaga, ...customersSaga, ...roomsSaga]);
 }
 
 sagaMiddleware.run(saga);
