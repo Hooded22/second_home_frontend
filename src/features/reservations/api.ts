@@ -43,8 +43,28 @@ export const addReservation = async (dataToSend: ReservationToSend) => {
   try {
     return await request.post(endpoints.reservations, { ...dataToSend });
   } catch (error) {
-    console.error("ERR: ", error);
+    throw error;
+  }
+};
 
+export const updateReservation = async (
+  id: string,
+  dataToSend: ReservationToSend
+) => {
+  try {
+    const { customerId, endTime, roomId, startTime, status } = dataToSend;
+    return await request.put<any, any, ReservationToSend>(
+      `${endpoints.reservations}?id=${id}`,
+      {
+        customerId,
+        endTime,
+        roomId,
+        startTime,
+        status,
+      }
+    );
+  } catch (error) {
+    console.error("ERR: ", error);
     throw error;
   }
 };

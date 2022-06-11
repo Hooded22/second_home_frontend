@@ -25,7 +25,7 @@ export type ReservationFromAPI = Omit<Reservation, "customer" | "room"> & {
 
 export type ReservationToSend = Omit<
   Reservation,
-  "customer" | "room" | "_id"
+  "customer" | "room" | "_id" | "cost"
 > & {
   customerId: string;
   roomId: string;

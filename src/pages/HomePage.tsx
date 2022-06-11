@@ -1,10 +1,12 @@
-import { Alert } from "@mui/material";
-import React, { FunctionComponent, useEffect } from "react";
+import { Alert, Container } from "@mui/material";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import NavBar from "../components/NavBar";
 import ReservationList from "../components/ReservationList";
 import {
   getAllReservationsRequest,
   resetAddReservationStatus,
+  resetEditReservationStatus,
 } from "../features/reservations/reservationsSlice";
 import { logoutUser } from "../features/users/usersSlice";
 import { useAppDispatch } from "../hooks/useAppDispatch";
@@ -16,14 +18,15 @@ interface IProps {}
 const HomePage: FunctionComponent<IProps> = () => {
   const dispatch = useAppDispatch();
   const data = useAppSelector((state) => state.reservations.data);
+  const [alert, setAlert] = useState("");
   const addReservationCompleted = useAppSelector(
     (state) =>
       state.reservations.addReservationStatus === RequestStatus.SUCCESSFULL
   );
-
-  const logoutHandler = () => {
-    dispatch(logoutUser());
-  };
+  const editReservationCompleted = useAppSelector(
+    (state) =>
+      state.reservations.editReservationStatus === RequestStatus.SUCCESSFULL
+  );
 
   useEffect(() => {
     dispatch(getAllReservationsRequest());
@@ -31,21 +34,34 @@ const HomePage: FunctionComponent<IProps> = () => {
 
   useEffect(() => {
     if (addReservationCompleted) {
-      setTimeout(() => dispatch(resetAddReservationStatus()), 3000);
+      setAlert("Added successfully");
+      setTimeout(() => {
+        setAlert("");
+        dispatch(resetAddReservationStatus());
+      }, 3000);
     }
-  }, [addReservationCompleted]);
+
+    if (editReservationCompleted) {
+      setAlert("Edit successfully");
+      setTimeout(() => {
+        setAlert("");
+        dispatch(resetEditReservationStatus());
+      }, 3000);
+    }
+  }, [addReservationCompleted, dispatch, editReservationCompleted]);
 
   return (
-    <div>
-      {addReservationCompleted && (
-        <Alert severity="success">Reservation added successfully</Alert>
-      )}
-      <h1>HomePage 123</h1>
-      <button type="button" onClick={logoutHandler}>
-        Logout
-      </button>
+    <Container
+      sx={{
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        flexDirection: "column",
+      }}
+    >
+      {alert && <Alert severity="success">{alert}</Alert>}
       <ReservationList data={data} />
-    </div>
+    </Container>
   );
 };
 

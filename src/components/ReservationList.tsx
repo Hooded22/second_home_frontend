@@ -5,8 +5,28 @@ import ListActionButtons from "./ListActionButtons";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { deleteReservationRequest } from "../features/reservations/reservationsSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import {
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
+const AddNewReservationButton = ({ onPress }: { onPress: () => void }) => {
+  return (
+    <Button
+      sx={{ maxWidth: 300, marginTop: 1, marginBottom: 1 }}
+      variant="contained"
+      onClick={onPress}
+    >
+      Add new reservation
+    </Button>
+  );
+};
 interface IProps {
   data: Reservation[];
 }
@@ -18,60 +38,66 @@ const ReservationList: FunctionComponent<IProps> = ({ data }) => {
     dispatch(deleteReservationRequest({ id }));
   };
 
-  const editHandler = () => {};
+  const editHandler = (reservationToEdit: Reservation) => {
+    navigate("/editReservation", { state: { data: reservationToEdit } });
+  };
 
-  const showDetailsHandler = () => {};
+  const showDetailsHandler = (reservation: Reservation) => {
+    navigate("/reservationDetails", { state: { data: reservation } });
+  };
 
   return (
     <>
-      <Button variant="outlined" onClick={() => navigate("/addReservation")}>
-        Add new reservation
-      </Button>
-      <table>
-        <thead>
-          <th>Customer</th>
-          <th>Start time</th>
-          <th>End time</th>
-          <th>Status</th>
-          <th>Cost</th>
-          <th>Room</th>
-          <th>Actions</th>
-        </thead>
-        <tbody>
-          {data.map((item) => (
-            <tr key={item._id}>
-              <td>{`${item.customer.name} ${item.customer.lastName}`}</td>
-              <td>
-                {item.startTime
-                  ? DateTime.fromJSDate(new Date(item.startTime)).toFormat(
-                      "yyyy-MM-dd HH:mm"
-                    )
-                  : "-"}
-              </td>
-              <td>
-                {item.endTime
-                  ? DateTime.fromJSDate(new Date(item.endTime)).toFormat(
-                      "yyyy-MM-dd HH:mm"
-                    )
-                  : "-"}
-              </td>
-              <td>{item.status}</td>
-              <td>{item.cost}</td>
-              <td>{item.room.number}</td>
-              <td>
-                <ListActionButtons
-                  onDeleteButtonPress={() => removeHandler(item._id)}
-                  onEditButtonPress={editHandler}
-                  onShowDetailsButtonPress={showDetailsHandler}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Button variant="outlined" onClick={() => navigate("/addReservation")}>
-        Add new reservation
-      </Button>
+      <h2>Reservations</h2>
+      <AddNewReservationButton onPress={() => navigate("/addReservation")} />
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Customer</TableCell>
+              <TableCell>Start time</TableCell>
+              <TableCell>End time</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Cost</TableCell>
+              <TableCell>Room</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item) => (
+              <TableRow key={item._id}>
+                <TableCell>{`${item.customer.name} ${item.customer.lastName}`}</TableCell>
+                <TableCell>
+                  {item.startTime
+                    ? DateTime.fromJSDate(new Date(item.startTime)).toFormat(
+                        "yyyy-MM-dd HH:mm"
+                      )
+                    : "-"}
+                </TableCell>
+                <TableCell>
+                  {item.endTime
+                    ? DateTime.fromJSDate(new Date(item.endTime)).toFormat(
+                        "yyyy-MM-dd HH:mm"
+                      )
+                    : "-"}
+                </TableCell>
+                <TableCell>{item.status}</TableCell>
+                <TableCell>{item.cost}</TableCell>
+                <TableCell>{item.room.number}</TableCell>
+                <TableCell>
+                  <ListActionButtons
+                    onDeleteButtonPress={() => removeHandler(item._id)}
+                    onEditButtonPress={() => editHandler(item)}
+                    onShowDetailsButtonPress={() => showDetailsHandler(item)}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      <AddNewReservationButton onPress={() => navigate("/addReservation")} />
     </>
   );
 };

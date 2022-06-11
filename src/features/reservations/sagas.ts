@@ -1,8 +1,12 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { put, takeLatest } from "redux-saga/effects";
-import { ReservationFormData } from "../../components/ReservationForm";
 import { Reservation, ReservationToSend } from "../../types/Reservation";
-import { addReservation, getAllReservations, removeReservation } from "./api";
+import {
+  addReservation,
+  getAllReservations,
+  removeReservation,
+  updateReservation,
+} from "./api";
 import {
   getAllReservationsRequest,
   getAllReservationsFailure,
@@ -12,6 +16,9 @@ import {
   addReservationSuccess,
   addReservationFailure,
   addReservationRequest,
+  editReservationSuccess,
+  editReservationFailure,
+  editReservationRequest,
 } from "./reservationsSlice";
 
 export function* getAllReservationsSaga() {
@@ -44,7 +51,19 @@ export function* addReservationSaga({
     yield put(getAllReservationsRequest());
     yield put(addReservationSuccess());
   } catch (error) {
-    yield put(addReservationFailure);
+    yield put(addReservationFailure());
+  }
+}
+
+export function* editReservationSagat({
+  payload: { id, data },
+}: PayloadAction<{ data: ReservationToSend; id: string }>) {
+  try {
+    yield updateReservation(id, data);
+    yield put(getAllReservationsRequest());
+    yield put(editReservationSuccess());
+  } catch (error) {
+    yield put(editReservationFailure());
   }
 }
 
@@ -52,4 +71,5 @@ export const reservationsSaga = [
   takeLatest(getAllReservationsRequest, getAllReservationsSaga),
   takeLatest(deleteReservationRequest, removeReservationSaga),
   takeLatest(addReservationRequest, addReservationSaga),
+  takeLatest(editReservationRequest, editReservationSagat),
 ];

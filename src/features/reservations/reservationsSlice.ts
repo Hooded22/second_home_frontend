@@ -6,11 +6,13 @@ import { Reservation, ReservationToSend } from "../../types/Reservation";
 interface ReservationsState extends InitialState {
   data: Reservation[];
   addReservationStatus: RequestStatus | null;
+  editReservationStatus: RequestStatus | null;
 }
 
 const initialState: ReservationsState = {
   status: null,
   addReservationStatus: null,
+  editReservationStatus: null,
   error: null,
   data: [],
 };
@@ -57,6 +59,21 @@ const reservationsSlice = createSlice({
     resetAddReservationStatus: (state) => {
       state.addReservationStatus = null;
     },
+    editReservationRequest: (
+      state,
+      action: PayloadAction<{ data: ReservationToSend; id: string }>
+    ) => {
+      state.editReservationStatus = RequestStatus.PENDING;
+    },
+    editReservationSuccess: (state) => {
+      state.editReservationStatus = RequestStatus.SUCCESSFULL;
+    },
+    editReservationFailure: (state) => {
+      state.editReservationStatus = RequestStatus.FAILURE;
+    },
+    resetEditReservationStatus: (state) => {
+      state.editReservationStatus = null;
+    },
   },
 });
 
@@ -70,6 +87,10 @@ export const {
   addReservationSuccess,
   addReservationFailure,
   resetAddReservationStatus,
+  editReservationRequest,
+  editReservationSuccess,
+  editReservationFailure,
+  resetEditReservationStatus,
 } = reservationsSlice.actions;
 
 export default reservationsSlice.reducer;

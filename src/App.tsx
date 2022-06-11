@@ -10,6 +10,9 @@ import ProtectedPage from "./pages/ProtectedPage";
 import AddReservationPage from "./pages/AddReservationPage";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import EditReservationPage from "./pages/EditReservationPage";
+import PageTemplate from "./pages/PageTemplate";
+import ReservationDetails from "./pages/ReservationDetails";
 
 const theme = createTheme({
   palette: {
@@ -48,7 +51,9 @@ function App() {
             path="/"
             element={
               <ProtectedPage>
-                <HomePage />
+                <PageTemplate pageName="Home">
+                  <HomePage />
+                </PageTemplate>
               </ProtectedPage>
             }
           />
@@ -58,7 +63,29 @@ function App() {
             path="/addReservation"
             element={
               <ProtectedPage>
-                <AddReservationPage />
+                <PageTemplate pageName="Add reservation">
+                  <AddReservationPage />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/editReservation"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Edit reservation">
+                  <EditReservationPage />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/reservationDetails"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Reservation details">
+                  <ReservationDetails />
+                </PageTemplate>
               </ProtectedPage>
             }
           />

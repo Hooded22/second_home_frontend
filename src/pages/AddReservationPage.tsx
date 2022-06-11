@@ -40,7 +40,7 @@ const AddReservationPage: FunctionComponent<IProps> = () => {
         flexDirection: "column",
       }}
     >
-      <h1>AddReservationPage</h1>
+      <h1>Add new reservation</h1>
       <ReservationForm onSubmit={onSubmit} />
     </Container>
   );
