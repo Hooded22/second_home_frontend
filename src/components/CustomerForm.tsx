@@ -20,8 +20,9 @@ interface IProps {
   onSubmit: (data: CustomerToSend) => void;
   defaultData?: Customer;
 }
-const CustomerForm: FunctionComponent<IProps> = ({ onSubmit }) => {
+const CustomerForm: FunctionComponent<IProps> = ({ onSubmit, defaultData }) => {
   const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -30,6 +31,7 @@ const CustomerForm: FunctionComponent<IProps> = ({ onSubmit }) => {
   } = useForm<CustomerToSend>({
     defaultValues: {
       birthDate: DateTime.now().minus({ year: 1 }).toJSDate(),
+      ...defaultData,
     },
   });
   return (

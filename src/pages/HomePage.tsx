@@ -5,7 +5,10 @@ import CustomersList from "../components/CustomersList";
 import NavBar from "../components/NavBar";
 import ReservationList from "../components/ReservationList";
 import RoomsList from "../components/RoomsList";
-import { getAllCustomersRequest } from "../features/customers/customersSlice";
+import {
+  getAllCustomersRequest,
+  resetEditCustomerStatus,
+} from "../features/customers/customersSlice";
 import {
   getAllReservationsRequest,
   resetAddReservationStatus,
@@ -45,6 +48,9 @@ const HomePage: FunctionComponent<IProps> = () => {
   const addCustomerCompleted = useAppSelector(
     (state) => state.customers.addCustomerStatus === RequestStatus.SUCCESSFULL
   );
+  const editCustomerCompleted = useAppSelector(
+    (state) => state.customers.editCustomerStatus === RequestStatus.SUCCESSFULL
+  );
 
   useEffect(() => {
     dispatch(getAllReservationsRequest());
@@ -63,19 +69,32 @@ const HomePage: FunctionComponent<IProps> = () => {
       }, 3000);
     }
 
-    if (editReservationCompleted) {
+    if (editReservationCompleted || editCustomerCompleted) {
       setAlert("Edit successfully");
       setTimeout(() => {
         setAlert("");
-        dispatch(resetEditReservationStatus());
+        editReservationCompleted
+          ? dispatch(resetEditReservationStatus())
+          : dispatch(resetEditCustomerStatus());
       }, 3000);
     }
-  }, [addReservationCompleted, dispatch, editReservationCompleted]);
+  }, [
+    addCustomerCompleted,
+    addReservationCompleted,
+    dispatch,
+    editCustomerCompleted,
+    editReservationCompleted,
+  ]);
 
   if (loading) {
     return (
       <Container sx={styles.container}>
-        <CircularProgress />
+        <CircularProgress
+          sx={{
+            marginTop: 50,
+            alignSelf: "center",
+          }}
+        />
       </Container>
     );
   }

@@ -5,10 +5,12 @@ import { Customer, CustomerToSend } from "../../types/Customer";
 interface CustomersState extends InitialState {
   data: Customer[];
   addCustomerStatus: RequestStatus | null;
+  editCustomerStatus: RequestStatus | null;
 }
 
 const initialState: CustomersState = {
   addCustomerStatus: null,
+  editCustomerStatus: null,
   status: null,
   error: null,
   data: [],
@@ -56,7 +58,22 @@ const customersSlice = createSlice({
       state.error = action.payload.message;
     },
     resetAddCustomerStatus: (state) => {
-      state.status = null;
+      state.addCustomerStatus = null;
+    },
+    editCustomerRequest: (
+      state,
+      _: PayloadAction<{ id: Customer["_id"]; data: CustomerToSend }>
+    ) => {
+      state.editCustomerStatus = RequestStatus.PENDING;
+    },
+    editCustomerSuccess: (state) => {
+      state.editCustomerStatus = RequestStatus.SUCCESSFULL;
+    },
+    editCustomerFailure: (state) => {
+      state.editCustomerStatus = RequestStatus.FAILURE;
+    },
+    resetEditCustomerStatus: (state) => {
+      state.editCustomerStatus = null;
     },
   },
 });
@@ -70,6 +87,10 @@ export const {
   addCustomerSuccess,
   addCustomerFailure,
   deleteCustomerRequest,
+  editCustomerRequest,
+  editCustomerSuccess,
+  editCustomerFailure,
+  resetEditCustomerStatus,
 } = customersSlice.actions;
 
 export default customersSlice.reducer;

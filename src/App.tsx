@@ -16,6 +16,7 @@ import ReservationDetails from "./pages/ReservationDetails";
 import CustomerDetails from "./pages/CustomerDetails";
 import RoomDetails from "./pages/RoomDetails";
 import AddCustomerPage from "./pages/AddCustomerPage";
+import EditCustomerPage from "./pages/EditCustomerPage";
 
 const theme = createTheme({
   palette: {
@@ -118,6 +119,16 @@ function App() {
               <ProtectedPage>
                 <PageTemplate pageName="Add customer">
                   <AddCustomerPage />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/editCustomer"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Edit customer">
+                  <EditCustomerPage />
                 </PageTemplate>
               </ProtectedPage>
             }

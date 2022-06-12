@@ -3,13 +3,21 @@ import {
   addCustomerRequest,
   addCustomerSuccess,
   deleteCustomerRequest,
+  editCustomerFailure,
+  editCustomerRequest,
+  editCustomerSuccess,
   getAllCustomersRequest,
   getAllCustomersRequestFailure,
   getAllCustomersRequestSuccess,
 } from "./customersSlice";
 import { put, takeLatest } from "redux-saga/effects";
 import { Customer, CustomerToSend } from "../../types/Customer";
-import { addCustomer, deleteCustomer, getAllCustomers } from "./api";
+import {
+  addCustomer,
+  deleteCustomer,
+  editCustomer,
+  getAllCustomers,
+} from "./api";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { removeReservation } from "../reservations/api";
 
@@ -54,8 +62,21 @@ export function* deleteCustomerSaga({
   }
 }
 
+export function* editCustomerSaga({
+  payload: { id, data },
+}: PayloadAction<{ id: Customer["_id"]; data: CustomerToSend }>) {
+  try {
+    yield editCustomer(id, data);
+    yield put(getAllCustomersRequest());
+    yield put(editCustomerSuccess());
+  } catch (error) {
+    yield put(editCustomerFailure());
+  }
+}
+
 export const customersSaga = [
   takeLatest(getAllCustomersRequest, getAllCustomersSaga),
   takeLatest(addCustomerRequest, addCustomerSaga),
   takeLatest(deleteCustomerRequest, deleteCustomerSaga),
+  takeLatest(editCustomerRequest, editCustomerSaga),
 ];

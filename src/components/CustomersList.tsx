@@ -27,7 +27,9 @@ const CustomersList: FunctionComponent<IProps> = ({ data }) => {
     dispatch(deleteCustomerRequest({ id }));
   };
 
-  const editHandler = (customerToEdit: Customer) => {};
+  const editHandler = (customerToEdit: Customer) => {
+    navigate("/editCustomer", { state: { data: customerToEdit } });
+  };
 
   const showDetailsHandler = (customer: Customer) => {
     navigate("/customerDetials", { state: { data: customer } });

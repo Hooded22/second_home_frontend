@@ -27,3 +27,22 @@ export const deleteCustomer = async (id: Customer["_id"]) => {
     throw error;
   }
 };
+
+export const editCustomer = async (
+  id: Customer["_id"],
+  data: CustomerToSend
+) => {
+  try {
+    const { birthDate, lastName, name } = data;
+    return await request.put<any, any, CustomerToSend>(
+      `${endpoints.customers}?id=${id}`,
+      {
+        lastName,
+        name,
+        birthDate,
+      }
+    );
+  } catch (error) {
+    throw error;
+  }
+};
