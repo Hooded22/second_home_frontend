@@ -22,7 +22,7 @@ const EditCustomerPage: FunctionComponent<IProps> = () => {
     if (!currentNavigationState?.data) {
       navigate("/");
     }
-  }, []);
+  }, [currentNavigationState?.data, navigate]);
 
   useEffect(() => {
     if (editCompleted) {

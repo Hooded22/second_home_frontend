@@ -31,10 +31,7 @@ const RoomsList: FunctionComponent<IProps> = ({ data }) => {
   return (
     <>
       <h2>Rooms</h2>
-      <AddButton
-        onPress={() => navigate("/addReservation")}
-        title="Add new room"
-      />
+      <AddButton onPress={() => navigate("/addRoom")} title="Add new room" />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -67,10 +64,7 @@ const RoomsList: FunctionComponent<IProps> = ({ data }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <AddButton
-        onPress={() => navigate("/addReservation")}
-        title="Add new room"
-      />
+      <AddButton onPress={() => navigate("/addRoom")} title="Add new room" />
     </>
   );
 };

@@ -12,3 +12,5 @@ export interface Room {
   standard: RoomStandard;
   beds: number;
 }
+
+export type RoomToSend = Omit<Room, "_id">;

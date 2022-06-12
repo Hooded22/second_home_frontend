@@ -2,7 +2,7 @@ import HomePage from "./pages/HomePage";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import RegisterPage from "./pages/RegisterPage";
-import { Container, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import LoginPage from "./pages/LoginPage";
@@ -17,6 +17,7 @@ import CustomerDetails from "./pages/CustomerDetails";
 import RoomDetails from "./pages/RoomDetails";
 import AddCustomerPage from "./pages/AddCustomerPage";
 import EditCustomerPage from "./pages/EditCustomerPage";
+import AddRoomPage from "./pages/AddRoomPage";
 
 const theme = createTheme({
   palette: {
@@ -129,6 +130,16 @@ function App() {
               <ProtectedPage>
                 <PageTemplate pageName="Edit customer">
                   <EditCustomerPage />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/addRoom"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Add room">
+                  <AddRoomPage />
                 </PageTemplate>
               </ProtectedPage>
             }

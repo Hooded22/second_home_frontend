@@ -1,7 +1,11 @@
+import { PayloadAction } from "@reduxjs/toolkit";
 import { put, takeLatest } from "redux-saga/effects";
-import { Room } from "../../types/Room";
-import { getAllRooms } from "./api";
+import { Room, RoomToSend } from "../../types/Room";
+import { addRoom, getAllRooms } from "./api";
 import {
+  addRoomFailure,
+  addRoomRequst,
+  addRoomSuccess,
   getAllRoomsRequest,
   getAllRoomsRequestFailure,
   getAllRoomsRequestSuccess,
@@ -21,4 +25,19 @@ export function* getAllRoomsSaga() {
   }
 }
 
-export const roomsSaga = [takeLatest(getAllRoomsRequest, getAllRoomsSaga)];
+export function* addRoomSaga({ payload }: PayloadAction<RoomToSend>) {
+  try {
+    yield addRoom(payload);
+    yield put(getAllRoomsRequest());
+    yield put(addRoomSuccess());
+  } catch (error: any) {
+    yield put(
+      addRoomFailure({ message: "Room with this number already exist", error })
+    );
+  }
+}
+
+export const roomsSaga = [
+  takeLatest(getAllRoomsRequest, getAllRoomsSaga),
+  takeLatest(addRoomRequst, addRoomSaga),
+];

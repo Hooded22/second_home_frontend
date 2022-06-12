@@ -1,8 +1,6 @@
 import { Alert, CircularProgress, Container } from "@mui/material";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { FunctionComponent, useEffect, useState } from "react";
 import CustomersList from "../components/CustomersList";
-import NavBar from "../components/NavBar";
 import ReservationList from "../components/ReservationList";
 import RoomsList from "../components/RoomsList";
 import {
@@ -14,12 +12,13 @@ import {
   resetAddReservationStatus,
   resetEditReservationStatus,
 } from "../features/reservations/reservationsSlice";
-import { getAllRoomsRequest } from "../features/rooms/roomsSlice";
-import { logoutUser } from "../features/users/usersSlice";
+import {
+  getAllRoomsRequest,
+  resetAddRoomStatus,
+} from "../features/rooms/roomsSlice";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { RequestStatus, StylesType } from "../types";
-import { HomePageState } from "../types/NavigationState";
 
 interface IProps {}
 const HomePage: FunctionComponent<IProps> = () => {
@@ -51,21 +50,26 @@ const HomePage: FunctionComponent<IProps> = () => {
   const editCustomerCompleted = useAppSelector(
     (state) => state.customers.editCustomerStatus === RequestStatus.SUCCESSFULL
   );
+  const addRoomCompleted = useAppSelector(
+    (state) => state.rooms.addRoomStatus === RequestStatus.SUCCESSFULL
+  );
 
   useEffect(() => {
     dispatch(getAllReservationsRequest());
     dispatch(getAllCustomersRequest());
     dispatch(getAllRoomsRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (addReservationCompleted || addCustomerCompleted) {
+    if (addReservationCompleted || addCustomerCompleted || addRoomCompleted) {
       setAlert("Added successfully");
       setTimeout(() => {
         setAlert("");
         addReservationCompleted
           ? dispatch(resetAddReservationStatus())
-          : dispatch(resetAddCustomerStatus());
+          : addCustomerCompleted
+          ? dispatch(resetAddCustomerStatus())
+          : dispatch(resetAddRoomStatus());
       }, 3000);
     }
 

@@ -21,8 +21,6 @@ interface IProps {
   defaultData?: Customer;
 }
 const CustomerForm: FunctionComponent<IProps> = ({ onSubmit, defaultData }) => {
-  const dispatch = useAppDispatch();
-
   const {
     register,
     handleSubmit,
