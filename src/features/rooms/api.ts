@@ -19,3 +19,19 @@ export const addRoom = async (data: RoomToSend) => {
     throw error;
   }
 };
+
+export const deleteRoom = async (id: Room["_id"]) => {
+  try {
+    return await request.delete(`${endpoints.rooms}?id=${id}`);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateRoom = async (id: Room["_id"], data: RoomToSend) => {
+  try {
+    return await request.put(`${endpoints.rooms}?id=${id}`, data);
+  } catch (error) {
+    throw error;
+  }
+};

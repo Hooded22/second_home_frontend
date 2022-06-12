@@ -20,14 +20,8 @@ const ReservationDetails: FunctionComponent<IProps> = () => {
     return null;
   }
 
-  const {
-    cost,
-    customer: { lastName, name },
-    endTime,
-    startTime,
-    status,
-    room: { beds, floor, number, price, standard },
-  } = currentNavigationState.data;
+  const { cost, customer, endTime, startTime, status, room } =
+    currentNavigationState.data;
 
   const sections = [
     {
@@ -42,18 +36,18 @@ const ReservationDetails: FunctionComponent<IProps> = () => {
     {
       sectionName: "Customer",
       items: [
-        { value: name, title: "First name" },
-        { value: lastName, title: "Last name" },
+        { value: customer?.name, title: "First name" },
+        { value: customer?.lastName, title: "Last name" },
       ],
     },
     {
       sectionName: "Room",
       items: [
-        { value: number, title: "Room number" },
-        { value: beds, title: "Beds count" },
-        { value: floor, title: "Floor" },
-        { value: price, title: "Price" },
-        { value: standard, title: "Standard" },
+        { value: room?.number, title: "Room number" },
+        { value: room?.beds, title: "Beds count" },
+        { value: room?.floor, title: "Floor" },
+        { value: room?.price, title: "Price" },
+        { value: room?.standard, title: "Standard" },
       ],
     },
   ];
@@ -77,7 +71,7 @@ const ReservationDetails: FunctionComponent<IProps> = () => {
                 <TextField
                   margin="normal"
                   label={item.title}
-                  defaultValue={item.value}
+                  defaultValue={item.value || "-"}
                   InputProps={{
                     readOnly: true,
                   }}

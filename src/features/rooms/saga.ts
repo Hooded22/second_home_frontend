@@ -1,11 +1,12 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { put, takeLatest } from "redux-saga/effects";
 import { Room, RoomToSend } from "../../types/Room";
-import { addRoom, getAllRooms } from "./api";
+import { addRoom, deleteRoom, getAllRooms } from "./api";
 import {
   addRoomFailure,
   addRoomRequst,
   addRoomSuccess,
+  deleteRoomRequest,
   getAllRoomsRequest,
   getAllRoomsRequestFailure,
   getAllRoomsRequestSuccess,
@@ -37,7 +38,19 @@ export function* addRoomSaga({ payload }: PayloadAction<RoomToSend>) {
   }
 }
 
+export function* deleteRoomSaga({
+  payload: { id },
+}: PayloadAction<{ id: Room["_id"] }>) {
+  try {
+    yield deleteRoom(id);
+    yield put(getAllRoomsRequest());
+  } catch (error: any) {
+    console.log(error);
+  }
+}
+
 export const roomsSaga = [
   takeLatest(getAllRoomsRequest, getAllRoomsSaga),
   takeLatest(addRoomRequst, addRoomSaga),
+  takeLatest(deleteRoomRequest, deleteRoomSaga),
 ];

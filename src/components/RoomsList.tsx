@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import React, { FunctionComponent } from "react";
 import { useNavigate } from "react-router-dom";
+import { deleteRoomRequest } from "../features/rooms/roomsSlice";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { Room } from "../types/Room";
 import AddButton from "./AddButton";
@@ -21,7 +22,9 @@ const RoomsList: FunctionComponent<IProps> = ({ data }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const removeHandler = (id: Room["_id"]) => {};
+  const removeHandler = (id: Room["_id"]) => {
+    dispatch(deleteRoomRequest({ id }));
+  };
 
   const editHandler = (roomToEdit: Room) => {};
 

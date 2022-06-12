@@ -54,8 +54,8 @@ const ReservationForm: FunctionComponent<IProps> = ({
   const defaultFormData: Partial<ReservationToSend> = defaultData
     ? {
         ...defaultData,
-        customerId: defaultData.customer._id,
-        roomId: defaultData.room._id,
+        customerId: defaultData.customer?._id,
+        roomId: defaultData.room?._id,
       }
     : {
         startTime: DateTime.now().toString(),

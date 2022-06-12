@@ -10,12 +10,12 @@ export enum ReservationStatuses {
 
 export interface Reservation {
   _id: string;
-  customer: Customer;
+  customer?: Customer;
   startTime: string;
   endTime: string;
   status: ReservationStatuses;
   cost: number;
-  room: Room;
+  room?: Room;
 }
 
 export type ReservationFromAPI = Omit<Reservation, "customer" | "room"> & {

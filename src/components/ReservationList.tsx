@@ -1,12 +1,11 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { Reservation } from "../types/Reservation";
 import { DateTime } from "luxon";
 import ListActionButtons from "./ListActionButtons";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { deleteReservationRequest } from "../features/reservations/reservationsSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -58,7 +57,11 @@ const ReservationList: FunctionComponent<IProps> = ({ data }) => {
           <TableBody>
             {data.map((item) => (
               <TableRow key={item._id}>
-                <TableCell>{`${item.customer.name} ${item.customer.lastName}`}</TableCell>
+                <TableCell>
+                  {item.customer
+                    ? `${item.customer?.name} ${item.customer?.lastName}`
+                    : "-"}
+                </TableCell>
                 <TableCell>
                   {item.startTime
                     ? DateTime.fromJSDate(new Date(item.startTime)).toFormat(
@@ -75,7 +78,7 @@ const ReservationList: FunctionComponent<IProps> = ({ data }) => {
                 </TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>{item.cost}</TableCell>
-                <TableCell>{item.room.number}</TableCell>
+                <TableCell>{item.room?.number || "-"}</TableCell>
                 <TableCell>
                   <ListActionButtons
                     onDeleteButtonPress={() => removeHandler(item._id)}
