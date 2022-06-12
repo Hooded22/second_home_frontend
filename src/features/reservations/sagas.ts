@@ -1,6 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { put, takeLatest } from "redux-saga/effects";
+import { Customer } from "../../types/Customer";
 import { Reservation, ReservationToSend } from "../../types/Reservation";
+import { Room } from "../../types/Room";
 import {
   addReservation,
   getAllReservations,
@@ -19,6 +21,12 @@ import {
   editReservationSuccess,
   editReservationFailure,
   editReservationRequest,
+  getReservationsForRoomIdSuccess,
+  getReservationsForRoomIdFailure,
+  getReservationsForRoomIdRequest,
+  getReservationsForCustomerIdSuccess,
+  getReservationsForCustomerIdFailure,
+  getReservationsForCustomerIdRequest,
 } from "./reservationsSlice";
 
 export function* getAllReservationsSaga() {
@@ -29,6 +37,30 @@ export function* getAllReservationsSaga() {
     yield put(
       getAllReservationsFailure({ error, message: "Fail get all reservations" })
     );
+  }
+}
+
+export function* getReservationsForRoomIdSaga({
+  payload: { id },
+}: PayloadAction<{ id: Room["_id"] }>) {
+  try {
+    const response: Reservation[] = yield getAllReservations(`?roomId=${id}`);
+    yield put(getReservationsForRoomIdSuccess(response));
+  } catch (error) {
+    yield put(getReservationsForRoomIdFailure());
+  }
+}
+
+export function* getReservationsForCustomerIdSaga({
+  payload: { id },
+}: PayloadAction<{ id: Customer["_id"] }>) {
+  try {
+    const response: Reservation[] = yield getAllReservations(
+      `?customerId=${id}`
+    );
+    yield put(getReservationsForCustomerIdSuccess(response));
+  } catch (error) {
+    yield put(getReservationsForCustomerIdFailure());
   }
 }
 
@@ -72,4 +104,9 @@ export const reservationsSaga = [
   takeLatest(deleteReservationRequest, removeReservationSaga),
   takeLatest(addReservationRequest, addReservationSaga),
   takeLatest(editReservationRequest, editReservationSagat),
+  takeLatest(getReservationsForRoomIdRequest, getReservationsForRoomIdSaga),
+  takeLatest(
+    getReservationsForCustomerIdRequest,
+    getReservationsForCustomerIdSaga
+  ),
 ];

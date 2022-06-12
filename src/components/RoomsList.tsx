@@ -26,7 +26,9 @@ const RoomsList: FunctionComponent<IProps> = ({ data }) => {
     dispatch(deleteRoomRequest({ id }));
   };
 
-  const editHandler = (roomToEdit: Room) => {};
+  const editHandler = (roomToEdit: Room) => {
+    navigate("/editRoom", { state: { data: roomToEdit } });
+  };
 
   const showDetailsHandler = (room: Room) => {
     navigate("/roomDetails", { state: { data: room } });

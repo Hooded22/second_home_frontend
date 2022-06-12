@@ -7,11 +7,14 @@ import {
   ReservationToSend,
 } from "../../types/Reservation";
 
-export const getAllReservations = async (): Promise<Reservation[]> => {
+export const getAllReservations = async (
+  params?: string
+): Promise<Reservation[]> => {
   try {
-    const response = await request.get<ReservationFromAPI[]>(
-      endpoints.reservations
-    );
+    const url = params
+      ? `${endpoints.reservations}${params}`
+      : endpoints.reservations;
+    const response = await request.get<ReservationFromAPI[]>(url);
     return response.data.map((item) => ({
       ...item,
       customer: item.customerId,

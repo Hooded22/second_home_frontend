@@ -28,7 +28,7 @@ export const deleteRoom = async (id: Room["_id"]) => {
   }
 };
 
-export const updateRoom = async (id: Room["_id"], data: RoomToSend) => {
+export const editRoom = async (id: Room["_id"], data: RoomToSend) => {
   try {
     return await request.put(`${endpoints.rooms}?id=${id}`, data);
   } catch (error) {

@@ -15,10 +15,12 @@ import {
 import {
   getAllRoomsRequest,
   resetAddRoomStatus,
+  resetEdtiRoomStatus,
 } from "../features/rooms/roomsSlice";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { RequestStatus, StylesType } from "../types";
+import { UserRoles } from "../types/User";
 
 interface IProps {}
 const HomePage: FunctionComponent<IProps> = () => {
@@ -53,6 +55,10 @@ const HomePage: FunctionComponent<IProps> = () => {
   const addRoomCompleted = useAppSelector(
     (state) => state.rooms.addRoomStatus === RequestStatus.SUCCESSFULL
   );
+  const editRoomCompleted = useAppSelector(
+    (state) => state.rooms.editRoomStatus === RequestStatus.SUCCESSFULL
+  );
+  const role = useAppSelector((state) => state.users.user?.role);
 
   useEffect(() => {
     dispatch(getAllReservationsRequest());
@@ -73,12 +79,18 @@ const HomePage: FunctionComponent<IProps> = () => {
       }, 3000);
     }
 
-    if (editReservationCompleted || editCustomerCompleted) {
+    if (
+      editReservationCompleted ||
+      editCustomerCompleted ||
+      editRoomCompleted
+    ) {
       setAlert("Edit successfully");
       setTimeout(() => {
         setAlert("");
         editReservationCompleted
           ? dispatch(resetEditReservationStatus())
+          : editRoomCompleted
+          ? dispatch(resetEdtiRoomStatus())
           : dispatch(resetEditCustomerStatus());
       }, 3000);
     }
@@ -99,6 +111,14 @@ const HomePage: FunctionComponent<IProps> = () => {
             alignSelf: "center",
           }}
         />
+      </Container>
+    );
+  }
+
+  if (role && role !== UserRoles.MANAGER) {
+    return (
+      <Container sx={styles.container}>
+        <h1>Ask your supervisor for permissions</h1>
       </Container>
     );
   }

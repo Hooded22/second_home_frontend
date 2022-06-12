@@ -18,6 +18,7 @@ import RoomDetails from "./pages/RoomDetails";
 import AddCustomerPage from "./pages/AddCustomerPage";
 import EditCustomerPage from "./pages/EditCustomerPage";
 import AddRoomPage from "./pages/AddRoomPage";
+import EditRoomPage from "./pages/EditRoomPage";
 
 const theme = createTheme({
   palette: {
@@ -55,7 +56,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedPage>
+              <ProtectedPage allowJustLogin>
                 <PageTemplate pageName="Home">
                   <HomePage />
                 </PageTemplate>
@@ -140,6 +141,16 @@ function App() {
               <ProtectedPage>
                 <PageTemplate pageName="Add room">
                   <AddRoomPage />
+                </PageTemplate>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/editRoom"
+            element={
+              <ProtectedPage>
+                <PageTemplate pageName="Edit room">
+                  <EditRoomPage />
                 </PageTemplate>
               </ProtectedPage>
             }

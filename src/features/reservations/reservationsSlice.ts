@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ReservationFormData } from "../../components/ReservationForm";
 import { InitialState, RequestError, RequestStatus } from "../../types";
+import { Customer } from "../../types/Customer";
 import { Reservation, ReservationToSend } from "../../types/Reservation";
+import { Room } from "../../types/Room";
 
 interface ReservationsState extends InitialState {
   data: Reservation[];
@@ -74,6 +76,40 @@ const reservationsSlice = createSlice({
     resetEditReservationStatus: (state) => {
       state.editReservationStatus = null;
     },
+    getReservationsForRoomIdRequest: (
+      state,
+      _: PayloadAction<{ id: Room["_id"] }>
+    ) => {
+      state.status = RequestStatus.PENDING;
+    },
+    getReservationsForRoomIdSuccess: (
+      state,
+      action: PayloadAction<Reservation[]>
+    ) => {
+      state.data = action.payload;
+      state.status = RequestStatus.SUCCESSFULL;
+    },
+    getReservationsForRoomIdFailure: (state) => {
+      state.data = [];
+      state.status = null;
+    },
+    getReservationsForCustomerIdRequest: (
+      state,
+      _: PayloadAction<{ id: Customer["_id"] }>
+    ) => {
+      state.status = RequestStatus.PENDING;
+    },
+    getReservationsForCustomerIdSuccess: (
+      state,
+      action: PayloadAction<Reservation[]>
+    ) => {
+      state.data = action.payload;
+      state.status = RequestStatus.SUCCESSFULL;
+    },
+    getReservationsForCustomerIdFailure: (state) => {
+      state.data = [];
+      state.status = null;
+    },
   },
 });
 
@@ -91,6 +127,12 @@ export const {
   editReservationSuccess,
   editReservationFailure,
   resetEditReservationStatus,
+  getReservationsForRoomIdRequest,
+  getReservationsForRoomIdSuccess,
+  getReservationsForRoomIdFailure,
+  getReservationsForCustomerIdRequest,
+  getReservationsForCustomerIdSuccess,
+  getReservationsForCustomerIdFailure,
 } = reservationsSlice.actions;
 
 export default reservationsSlice.reducer;
